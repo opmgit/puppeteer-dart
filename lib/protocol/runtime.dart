@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import '../src/connection.dart';
 
 /// Runtime domain exposes JavaScript runtime by means of remote evaluation and mirror objects.
@@ -32,22 +33,18 @@ class RuntimeApi {
       .map((event) => ExceptionThrownEvent.fromJson(event.parameters));
 
   /// Issued when new execution context is created.
-  Stream<ExecutionContextDescription> get onExecutionContextCreated =>
-      _client.onEvent
-          .where((event) => event.name == 'Runtime.executionContextCreated')
-          .map((event) => ExecutionContextDescription.fromJson(
-              event.parameters['context'] as Map<String, dynamic>));
+  Stream<ExecutionContextDescription> get onExecutionContextCreated => _client.onEvent
+      .where((event) => event.name == 'Runtime.executionContextCreated')
+      .map((event) => ExecutionContextDescription.fromJson(event.parameters['context'] as Map<String, dynamic>));
 
   /// Issued when execution context is destroyed.
-  Stream<ExecutionContextDestroyedEvent> get onExecutionContextDestroyed =>
-      _client.onEvent
-          .where((event) => event.name == 'Runtime.executionContextDestroyed')
-          .map((event) =>
-              ExecutionContextDestroyedEvent.fromJson(event.parameters));
+  Stream<ExecutionContextDestroyedEvent> get onExecutionContextDestroyed => _client.onEvent
+      .where((event) => event.name == 'Runtime.executionContextDestroyed')
+      .map((event) => ExecutionContextDestroyedEvent.fromJson(event.parameters));
 
   /// Issued when all executionContexts were cleared in browser
-  Stream get onExecutionContextsCleared => _client.onEvent
-      .where((event) => event.name == 'Runtime.executionContextsCleared');
+  Stream get onExecutionContextsCleared =>
+      _client.onEvent.where((event) => event.name == 'Runtime.executionContextsCleared');
 
   /// Issued when object should be inspected (for example, as a result of inspect() command line API
   /// call).
@@ -123,8 +120,7 @@ class RuntimeApi {
       if (objectGroup != null) 'objectGroup': objectGroup,
       if (throwOnSideEffect != null) 'throwOnSideEffect': throwOnSideEffect,
       if (uniqueContextId != null) 'uniqueContextId': uniqueContextId,
-      if (generateWebDriverValue != null)
-        'generateWebDriverValue': generateWebDriverValue,
+      if (generateWebDriverValue != null) 'generateWebDriverValue': generateWebDriverValue,
     });
     return CallFunctionOnResult.fromJson(result);
   }
@@ -135,8 +131,7 @@ class RuntimeApi {
   /// [persistScript] Specifies whether the compiled script should be persisted.
   /// [executionContextId] Specifies in which execution context to perform script run. If the parameter is omitted the
   /// evaluation will be performed in the context of the inspected page.
-  Future<CompileScriptResult> compileScript(
-      String expression, String sourceURL, bool persistScript,
+  Future<CompileScriptResult> compileScript(String expression, String sourceURL, bool persistScript,
       {ExecutionContextId? executionContextId}) async {
     var result = await _client.send('Runtime.compileScript', {
       'expression': expression,
@@ -217,8 +212,7 @@ class RuntimeApi {
     var result = await _client.send('Runtime.evaluate', {
       'expression': expression,
       if (objectGroup != null) 'objectGroup': objectGroup,
-      if (includeCommandLineAPI != null)
-        'includeCommandLineAPI': includeCommandLineAPI,
+      if (includeCommandLineAPI != null) 'includeCommandLineAPI': includeCommandLineAPI,
       if (silent != null) 'silent': silent,
       if (contextId != null) 'contextId': contextId,
       if (returnByValue != null) 'returnByValue': returnByValue,
@@ -229,11 +223,9 @@ class RuntimeApi {
       if (timeout != null) 'timeout': timeout,
       if (disableBreaks != null) 'disableBreaks': disableBreaks,
       if (replMode != null) 'replMode': replMode,
-      if (allowUnsafeEvalBlockedByCSP != null)
-        'allowUnsafeEvalBlockedByCSP': allowUnsafeEvalBlockedByCSP,
+      if (allowUnsafeEvalBlockedByCSP != null) 'allowUnsafeEvalBlockedByCSP': allowUnsafeEvalBlockedByCSP,
       if (uniqueContextId != null) 'uniqueContextId': uniqueContextId,
-      if (generateWebDriverValue != null)
-        'generateWebDriverValue': generateWebDriverValue,
+      if (generateWebDriverValue != null) 'generateWebDriverValue': generateWebDriverValue,
     });
     return EvaluateResult.fromJson(result);
   }
@@ -269,19 +261,16 @@ class RuntimeApi {
     var result = await _client.send('Runtime.getProperties', {
       'objectId': objectId,
       if (ownProperties != null) 'ownProperties': ownProperties,
-      if (accessorPropertiesOnly != null)
-        'accessorPropertiesOnly': accessorPropertiesOnly,
+      if (accessorPropertiesOnly != null) 'accessorPropertiesOnly': accessorPropertiesOnly,
       if (generatePreview != null) 'generatePreview': generatePreview,
-      if (nonIndexedPropertiesOnly != null)
-        'nonIndexedPropertiesOnly': nonIndexedPropertiesOnly,
+      if (nonIndexedPropertiesOnly != null) 'nonIndexedPropertiesOnly': nonIndexedPropertiesOnly,
     });
     return GetPropertiesResult.fromJson(result);
   }
 
   /// Returns all let, const and class variables from global scope.
   /// [executionContextId] Specifies in which execution context to lookup global scope variables.
-  Future<List<String>> globalLexicalScopeNames(
-      {ExecutionContextId? executionContextId}) async {
+  Future<List<String>> globalLexicalScopeNames({ExecutionContextId? executionContextId}) async {
     var result = await _client.send('Runtime.globalLexicalScopeNames', {
       if (executionContextId != null) 'executionContextId': executionContextId,
     });
@@ -291,8 +280,7 @@ class RuntimeApi {
   /// [prototypeObjectId] Identifier of the prototype to return objects for.
   /// [objectGroup] Symbolic group name that can be used to release the results.
   /// Returns: Array with objects.
-  Future<RemoteObject> queryObjects(RemoteObjectId prototypeObjectId,
-      {String? objectGroup}) async {
+  Future<RemoteObject> queryObjects(RemoteObjectId prototypeObjectId, {String? objectGroup}) async {
     var result = await _client.send('Runtime.queryObjects', {
       'prototypeObjectId': prototypeObjectId,
       if (objectGroup != null) 'objectGroup': objectGroup,
@@ -346,8 +334,7 @@ class RuntimeApi {
       if (executionContextId != null) 'executionContextId': executionContextId,
       if (objectGroup != null) 'objectGroup': objectGroup,
       if (silent != null) 'silent': silent,
-      if (includeCommandLineAPI != null)
-        'includeCommandLineAPI': includeCommandLineAPI,
+      if (includeCommandLineAPI != null) 'includeCommandLineAPI': includeCommandLineAPI,
       if (returnByValue != null) 'returnByValue': returnByValue,
       if (generatePreview != null) 'generatePreview': generatePreview,
       if (awaitPromise != null) 'awaitPromise': awaitPromise,
@@ -394,14 +381,12 @@ class RuntimeApi {
   /// `Page.addScriptToEvaluateOnNewDocument`.
   /// This parameter is mutually exclusive with `executionContextId`.
   Future<void> addBinding(String name,
-      {@Deprecated('This parameter is deprecated')
-          ExecutionContextId? executionContextId,
+      {@Deprecated('This parameter is deprecated') ExecutionContextId? executionContextId,
       String? executionContextName}) async {
     await _client.send('Runtime.addBinding', {
       'name': name,
       if (executionContextId != null) 'executionContextId': executionContextId,
-      if (executionContextName != null)
-        'executionContextName': executionContextName,
+      if (executionContextName != null) 'executionContextName': executionContextName,
     });
   }
 
@@ -419,13 +404,11 @@ class RuntimeApi {
   /// only be populated if the Runtime domain was enabled at the time when the
   /// Error was thrown.
   /// [errorObjectId] The error object for which to resolve the exception details.
-  Future<ExceptionDetails> getExceptionDetails(
-      RemoteObjectId errorObjectId) async {
+  Future<ExceptionDetails> getExceptionDetails(RemoteObjectId errorObjectId) async {
     var result = await _client.send('Runtime.getExceptionDetails', {
       'errorObjectId': errorObjectId,
     });
-    return ExceptionDetails.fromJson(
-        result['exceptionDetails'] as Map<String, dynamic>);
+    return ExceptionDetails.fromJson(result['exceptionDetails'] as Map<String, dynamic>);
   }
 }
 
@@ -437,17 +420,13 @@ class BindingCalledEvent {
   /// Identifier of the context where the call was made.
   final ExecutionContextId executionContextId;
 
-  BindingCalledEvent(
-      {required this.name,
-      required this.payload,
-      required this.executionContextId});
+  BindingCalledEvent({required this.name, required this.payload, required this.executionContextId});
 
   factory BindingCalledEvent.fromJson(Map<String, dynamic> json) {
     return BindingCalledEvent(
       name: json['name'] as String,
       payload: json['payload'] as String,
-      executionContextId:
-          ExecutionContextId.fromJson(json['executionContextId'] as int),
+      executionContextId: ExecutionContextId.fromJson(json['executionContextId'] as int),
     );
   }
 }
@@ -486,15 +465,11 @@ class ConsoleAPICalledEvent {
   factory ConsoleAPICalledEvent.fromJson(Map<String, dynamic> json) {
     return ConsoleAPICalledEvent(
       type: ConsoleAPICalledEventType.fromJson(json['type'] as String),
-      args: (json['args'] as List)
-          .map((e) => RemoteObject.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      executionContextId:
-          ExecutionContextId.fromJson(json['executionContextId'] as int),
+      args: (json['args'] as List).map((e) => RemoteObject.fromJson(e as Map<String, dynamic>)).toList(),
+      executionContextId: ExecutionContextId.fromJson(json['executionContextId'] as int),
       timestamp: Timestamp.fromJson(json['timestamp'] as num),
-      stackTrace: json.containsKey('stackTrace')
-          ? StackTraceData.fromJson(json['stackTrace'] as Map<String, dynamic>)
-          : null,
+      stackTrace:
+          json.containsKey('stackTrace') ? StackTraceData.fromJson(json['stackTrace'] as Map<String, dynamic>) : null,
       context: json.containsKey('context') ? json['context'] as String : null,
     );
   }
@@ -523,14 +498,12 @@ class ExceptionThrownEvent {
 
   final ExceptionDetails exceptionDetails;
 
-  ExceptionThrownEvent(
-      {required this.timestamp, required this.exceptionDetails});
+  ExceptionThrownEvent({required this.timestamp, required this.exceptionDetails});
 
   factory ExceptionThrownEvent.fromJson(Map<String, dynamic> json) {
     return ExceptionThrownEvent(
       timestamp: Timestamp.fromJson(json['timestamp'] as num),
-      exceptionDetails: ExceptionDetails.fromJson(
-          json['exceptionDetails'] as Map<String, dynamic>),
+      exceptionDetails: ExceptionDetails.fromJson(json['exceptionDetails'] as Map<String, dynamic>),
     );
   }
 }
@@ -543,7 +516,7 @@ class ExecutionContextDestroyedEvent {
 
   factory ExecutionContextDestroyedEvent.fromJson(Map<String, dynamic> json) {
     return ExecutionContextDestroyedEvent(
-      executionContextUniqueId: json['executionContextUniqueId'] as String,
+      executionContextUniqueId: (json['executionContextUniqueId'] as String?) ?? 'null',
     );
   }
 }
@@ -556,8 +529,7 @@ class InspectRequestedEvent {
   /// Identifier of the context where the call was made.
   final ExecutionContextId? executionContextId;
 
-  InspectRequestedEvent(
-      {required this.object, required this.hints, this.executionContextId});
+  InspectRequestedEvent({required this.object, required this.hints, this.executionContextId});
 
   factory InspectRequestedEvent.fromJson(Map<String, dynamic> json) {
     return InspectRequestedEvent(
@@ -583,8 +555,7 @@ class AwaitPromiseResult {
     return AwaitPromiseResult(
       result: RemoteObject.fromJson(json['result'] as Map<String, dynamic>),
       exceptionDetails: json.containsKey('exceptionDetails')
-          ? ExceptionDetails.fromJson(
-              json['exceptionDetails'] as Map<String, dynamic>)
+          ? ExceptionDetails.fromJson(json['exceptionDetails'] as Map<String, dynamic>)
           : null,
     );
   }
@@ -603,8 +574,7 @@ class CallFunctionOnResult {
     return CallFunctionOnResult(
       result: RemoteObject.fromJson(json['result'] as Map<String, dynamic>),
       exceptionDetails: json.containsKey('exceptionDetails')
-          ? ExceptionDetails.fromJson(
-              json['exceptionDetails'] as Map<String, dynamic>)
+          ? ExceptionDetails.fromJson(json['exceptionDetails'] as Map<String, dynamic>)
           : null,
     );
   }
@@ -621,12 +591,9 @@ class CompileScriptResult {
 
   factory CompileScriptResult.fromJson(Map<String, dynamic> json) {
     return CompileScriptResult(
-      scriptId: json.containsKey('scriptId')
-          ? ScriptId.fromJson(json['scriptId'] as String)
-          : null,
+      scriptId: json.containsKey('scriptId') ? ScriptId.fromJson(json['scriptId'] as String) : null,
       exceptionDetails: json.containsKey('exceptionDetails')
-          ? ExceptionDetails.fromJson(
-              json['exceptionDetails'] as Map<String, dynamic>)
+          ? ExceptionDetails.fromJson(json['exceptionDetails'] as Map<String, dynamic>)
           : null,
     );
   }
@@ -645,8 +612,7 @@ class EvaluateResult {
     return EvaluateResult(
       result: RemoteObject.fromJson(json['result'] as Map<String, dynamic>),
       exceptionDetails: json.containsKey('exceptionDetails')
-          ? ExceptionDetails.fromJson(
-              json['exceptionDetails'] as Map<String, dynamic>)
+          ? ExceptionDetails.fromJson(json['exceptionDetails'] as Map<String, dynamic>)
           : null,
     );
   }
@@ -682,32 +648,23 @@ class GetPropertiesResult {
   /// Exception details.
   final ExceptionDetails? exceptionDetails;
 
-  GetPropertiesResult(
-      {required this.result,
-      this.internalProperties,
-      this.privateProperties,
-      this.exceptionDetails});
+  GetPropertiesResult({required this.result, this.internalProperties, this.privateProperties, this.exceptionDetails});
 
   factory GetPropertiesResult.fromJson(Map<String, dynamic> json) {
     return GetPropertiesResult(
-      result: (json['result'] as List)
-          .map((e) => PropertyDescriptor.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      result: (json['result'] as List).map((e) => PropertyDescriptor.fromJson(e as Map<String, dynamic>)).toList(),
       internalProperties: json.containsKey('internalProperties')
           ? (json['internalProperties'] as List)
-              .map((e) => InternalPropertyDescriptor.fromJson(
-                  e as Map<String, dynamic>))
+              .map((e) => InternalPropertyDescriptor.fromJson(e as Map<String, dynamic>))
               .toList()
           : null,
       privateProperties: json.containsKey('privateProperties')
           ? (json['privateProperties'] as List)
-              .map((e) =>
-                  PrivatePropertyDescriptor.fromJson(e as Map<String, dynamic>))
+              .map((e) => PrivatePropertyDescriptor.fromJson(e as Map<String, dynamic>))
               .toList()
           : null,
       exceptionDetails: json.containsKey('exceptionDetails')
-          ? ExceptionDetails.fromJson(
-              json['exceptionDetails'] as Map<String, dynamic>)
+          ? ExceptionDetails.fromJson(json['exceptionDetails'] as Map<String, dynamic>)
           : null,
     );
   }
@@ -726,8 +683,7 @@ class RunScriptResult {
     return RunScriptResult(
       result: RemoteObject.fromJson(json['result'] as Map<String, dynamic>),
       exceptionDetails: json.containsKey('exceptionDetails')
-          ? ExceptionDetails.fromJson(
-              json['exceptionDetails'] as Map<String, dynamic>)
+          ? ExceptionDetails.fromJson(json['exceptionDetails'] as Map<String, dynamic>)
           : null,
     );
   }
@@ -744,8 +700,7 @@ class ScriptId {
   String toJson() => value;
 
   @override
-  bool operator ==(other) =>
-      (other is ScriptId && other.value == value) || value == other;
+  bool operator ==(other) => (other is ScriptId && other.value == value) || value == other;
 
   @override
   int get hashCode => value.hashCode;
@@ -769,8 +724,7 @@ class WebDriverValue {
     return WebDriverValue(
       type: WebDriverValueType.fromJson(json['type'] as String),
       value: json.containsKey('value') ? json['value'] as dynamic : null,
-      objectId:
-          json.containsKey('objectId') ? json['objectId'] as String : null,
+      objectId: json.containsKey('objectId') ? json['objectId'] as String : null,
     );
   }
 
@@ -813,8 +767,7 @@ enum WebDriverValueType {
 
   const WebDriverValueType(this.value);
 
-  factory WebDriverValueType.fromJson(String value) =>
-      WebDriverValueType.values.firstWhere((e) => e.value == value);
+  factory WebDriverValueType.fromJson(String value) => WebDriverValueType.values.firstWhere((e) => e.value == value);
 
   String toJson() => value;
 
@@ -833,8 +786,7 @@ class RemoteObjectId {
   String toJson() => value;
 
   @override
-  bool operator ==(other) =>
-      (other is RemoteObjectId && other.value == value) || value == other;
+  bool operator ==(other) => (other is RemoteObjectId && other.value == value) || value == other;
 
   @override
   int get hashCode => value.hashCode;
@@ -850,14 +802,12 @@ class UnserializableValue {
 
   UnserializableValue(this.value);
 
-  factory UnserializableValue.fromJson(String value) =>
-      UnserializableValue(value);
+  factory UnserializableValue.fromJson(String value) => UnserializableValue(value);
 
   String toJson() => value;
 
   @override
-  bool operator ==(other) =>
-      (other is UnserializableValue && other.value == value) || value == other;
+  bool operator ==(other) => (other is UnserializableValue && other.value == value) || value == other;
 
   @override
   int get hashCode => value.hashCode;
@@ -915,31 +865,20 @@ class RemoteObject {
   factory RemoteObject.fromJson(Map<String, dynamic> json) {
     return RemoteObject(
       type: RemoteObjectType.fromJson(json['type'] as String),
-      subtype: json.containsKey('subtype')
-          ? RemoteObjectSubtype.fromJson(json['subtype'] as String)
-          : null,
-      className:
-          json.containsKey('className') ? json['className'] as String : null,
+      subtype: json.containsKey('subtype') ? RemoteObjectSubtype.fromJson(json['subtype'] as String) : null,
+      className: json.containsKey('className') ? json['className'] as String : null,
       value: json.containsKey('value') ? json['value'] as dynamic : null,
       unserializableValue: json.containsKey('unserializableValue')
           ? UnserializableValue.fromJson(json['unserializableValue'] as String)
           : null,
-      description: json.containsKey('description')
-          ? json['description'] as String
-          : null,
+      description: json.containsKey('description') ? json['description'] as String : null,
       webDriverValue: json.containsKey('webDriverValue')
-          ? WebDriverValue.fromJson(
-              json['webDriverValue'] as Map<String, dynamic>)
+          ? WebDriverValue.fromJson(json['webDriverValue'] as Map<String, dynamic>)
           : null,
-      objectId: json.containsKey('objectId')
-          ? RemoteObjectId.fromJson(json['objectId'] as String)
-          : null,
-      preview: json.containsKey('preview')
-          ? ObjectPreview.fromJson(json['preview'] as Map<String, dynamic>)
-          : null,
+      objectId: json.containsKey('objectId') ? RemoteObjectId.fromJson(json['objectId'] as String) : null,
+      preview: json.containsKey('preview') ? ObjectPreview.fromJson(json['preview'] as Map<String, dynamic>) : null,
       customPreview: json.containsKey('customPreview')
-          ? CustomPreview.fromJson(
-              json['customPreview'] as Map<String, dynamic>)
+          ? CustomPreview.fromJson(json['customPreview'] as Map<String, dynamic>)
           : null,
     );
   }
@@ -950,8 +889,7 @@ class RemoteObject {
       if (subtype != null) 'subtype': subtype,
       if (className != null) 'className': className,
       if (value != null) 'value': value,
-      if (unserializableValue != null)
-        'unserializableValue': unserializableValue!.toJson(),
+      if (unserializableValue != null) 'unserializableValue': unserializableValue!.toJson(),
       if (description != null) 'description': description,
       if (webDriverValue != null) 'webDriverValue': webDriverValue!.toJson(),
       if (objectId != null) 'objectId': objectId!.toJson(),
@@ -976,8 +914,7 @@ enum RemoteObjectType {
 
   const RemoteObjectType(this.value);
 
-  factory RemoteObjectType.fromJson(String value) =>
-      RemoteObjectType.values.firstWhere((e) => e.value == value);
+  factory RemoteObjectType.fromJson(String value) => RemoteObjectType.values.firstWhere((e) => e.value == value);
 
   String toJson() => value;
 
@@ -1011,8 +948,7 @@ enum RemoteObjectSubtype {
 
   const RemoteObjectSubtype(this.value);
 
-  factory RemoteObjectSubtype.fromJson(String value) =>
-      RemoteObjectSubtype.values.firstWhere((e) => e.value == value);
+  factory RemoteObjectSubtype.fromJson(String value) => RemoteObjectSubtype.values.firstWhere((e) => e.value == value);
 
   String toJson() => value;
 
@@ -1035,9 +971,7 @@ class CustomPreview {
   factory CustomPreview.fromJson(Map<String, dynamic> json) {
     return CustomPreview(
       header: json['header'] as String,
-      bodyGetterId: json.containsKey('bodyGetterId')
-          ? RemoteObjectId.fromJson(json['bodyGetterId'] as String)
-          : null,
+      bodyGetterId: json.containsKey('bodyGetterId') ? RemoteObjectId.fromJson(json['bodyGetterId'] as String) : null,
     );
   }
 
@@ -1080,20 +1014,12 @@ class ObjectPreview {
   factory ObjectPreview.fromJson(Map<String, dynamic> json) {
     return ObjectPreview(
       type: ObjectPreviewType.fromJson(json['type'] as String),
-      subtype: json.containsKey('subtype')
-          ? ObjectPreviewSubtype.fromJson(json['subtype'] as String)
-          : null,
-      description: json.containsKey('description')
-          ? json['description'] as String
-          : null,
+      subtype: json.containsKey('subtype') ? ObjectPreviewSubtype.fromJson(json['subtype'] as String) : null,
+      description: json.containsKey('description') ? json['description'] as String : null,
       overflow: json['overflow'] as bool? ?? false,
-      properties: (json['properties'] as List)
-          .map((e) => PropertyPreview.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      properties: (json['properties'] as List).map((e) => PropertyPreview.fromJson(e as Map<String, dynamic>)).toList(),
       entries: json.containsKey('entries')
-          ? (json['entries'] as List)
-              .map((e) => EntryPreview.fromJson(e as Map<String, dynamic>))
-              .toList()
+          ? (json['entries'] as List).map((e) => EntryPreview.fromJson(e as Map<String, dynamic>)).toList()
           : null,
     );
   }
@@ -1125,8 +1051,7 @@ enum ObjectPreviewType {
 
   const ObjectPreviewType(this.value);
 
-  factory ObjectPreviewType.fromJson(String value) =>
-      ObjectPreviewType.values.firstWhere((e) => e.value == value);
+  factory ObjectPreviewType.fromJson(String value) => ObjectPreviewType.values.firstWhere((e) => e.value == value);
 
   String toJson() => value;
 
@@ -1185,12 +1110,7 @@ class PropertyPreview {
   /// Object subtype hint. Specified for `object` type values only.
   final PropertyPreviewSubtype? subtype;
 
-  PropertyPreview(
-      {required this.name,
-      required this.type,
-      this.value,
-      this.valuePreview,
-      this.subtype});
+  PropertyPreview({required this.name, required this.type, this.value, this.valuePreview, this.subtype});
 
   factory PropertyPreview.fromJson(Map<String, dynamic> json) {
     return PropertyPreview(
@@ -1200,9 +1120,7 @@ class PropertyPreview {
       valuePreview: json.containsKey('valuePreview')
           ? ObjectPreview.fromJson(json['valuePreview'] as Map<String, dynamic>)
           : null,
-      subtype: json.containsKey('subtype')
-          ? PropertyPreviewSubtype.fromJson(json['subtype'] as String)
-          : null,
+      subtype: json.containsKey('subtype') ? PropertyPreviewSubtype.fromJson(json['subtype'] as String) : null,
     );
   }
 
@@ -1233,8 +1151,7 @@ enum PropertyPreviewType {
 
   const PropertyPreviewType(this.value);
 
-  factory PropertyPreviewType.fromJson(String value) =>
-      PropertyPreviewType.values.firstWhere((e) => e.value == value);
+  factory PropertyPreviewType.fromJson(String value) => PropertyPreviewType.values.firstWhere((e) => e.value == value);
 
   String toJson() => value;
 
@@ -1288,9 +1205,7 @@ class EntryPreview {
 
   factory EntryPreview.fromJson(Map<String, dynamic> json) {
     return EntryPreview(
-      key: json.containsKey('key')
-          ? ObjectPreview.fromJson(json['key'] as Map<String, dynamic>)
-          : null,
+      key: json.containsKey('key') ? ObjectPreview.fromJson(json['key'] as Map<String, dynamic>) : null,
       value: ObjectPreview.fromJson(json['value'] as Map<String, dynamic>),
     );
   }
@@ -1354,24 +1269,15 @@ class PropertyDescriptor {
   factory PropertyDescriptor.fromJson(Map<String, dynamic> json) {
     return PropertyDescriptor(
       name: json['name'] as String,
-      value: json.containsKey('value')
-          ? RemoteObject.fromJson(json['value'] as Map<String, dynamic>)
-          : null,
+      value: json.containsKey('value') ? RemoteObject.fromJson(json['value'] as Map<String, dynamic>) : null,
       writable: json.containsKey('writable') ? json['writable'] as bool : null,
-      get: json.containsKey('get')
-          ? RemoteObject.fromJson(json['get'] as Map<String, dynamic>)
-          : null,
-      set: json.containsKey('set')
-          ? RemoteObject.fromJson(json['set'] as Map<String, dynamic>)
-          : null,
+      get: json.containsKey('get') ? RemoteObject.fromJson(json['get'] as Map<String, dynamic>) : null,
+      set: json.containsKey('set') ? RemoteObject.fromJson(json['set'] as Map<String, dynamic>) : null,
       configurable: json['configurable'] as bool? ?? false,
       enumerable: json['enumerable'] as bool? ?? false,
-      wasThrown:
-          json.containsKey('wasThrown') ? json['wasThrown'] as bool : null,
+      wasThrown: json.containsKey('wasThrown') ? json['wasThrown'] as bool : null,
       isOwn: json.containsKey('isOwn') ? json['isOwn'] as bool : null,
-      symbol: json.containsKey('symbol')
-          ? RemoteObject.fromJson(json['symbol'] as Map<String, dynamic>)
-          : null,
+      symbol: json.containsKey('symbol') ? RemoteObject.fromJson(json['symbol'] as Map<String, dynamic>) : null,
     );
   }
 
@@ -1404,9 +1310,7 @@ class InternalPropertyDescriptor {
   factory InternalPropertyDescriptor.fromJson(Map<String, dynamic> json) {
     return InternalPropertyDescriptor(
       name: json['name'] as String,
-      value: json.containsKey('value')
-          ? RemoteObject.fromJson(json['value'] as Map<String, dynamic>)
-          : null,
+      value: json.containsKey('value') ? RemoteObject.fromJson(json['value'] as Map<String, dynamic>) : null,
     );
   }
 
@@ -1434,21 +1338,14 @@ class PrivatePropertyDescriptor {
   /// or `undefined` if there is no setter (accessor descriptors only).
   final RemoteObject? set;
 
-  PrivatePropertyDescriptor(
-      {required this.name, this.value, this.get, this.set});
+  PrivatePropertyDescriptor({required this.name, this.value, this.get, this.set});
 
   factory PrivatePropertyDescriptor.fromJson(Map<String, dynamic> json) {
     return PrivatePropertyDescriptor(
       name: json['name'] as String,
-      value: json.containsKey('value')
-          ? RemoteObject.fromJson(json['value'] as Map<String, dynamic>)
-          : null,
-      get: json.containsKey('get')
-          ? RemoteObject.fromJson(json['get'] as Map<String, dynamic>)
-          : null,
-      set: json.containsKey('set')
-          ? RemoteObject.fromJson(json['set'] as Map<String, dynamic>)
-          : null,
+      value: json.containsKey('value') ? RemoteObject.fromJson(json['value'] as Map<String, dynamic>) : null,
+      get: json.containsKey('get') ? RemoteObject.fromJson(json['get'] as Map<String, dynamic>) : null,
+      set: json.containsKey('set') ? RemoteObject.fromJson(json['set'] as Map<String, dynamic>) : null,
     );
   }
 
@@ -1482,17 +1379,14 @@ class CallArgument {
       unserializableValue: json.containsKey('unserializableValue')
           ? UnserializableValue.fromJson(json['unserializableValue'] as String)
           : null,
-      objectId: json.containsKey('objectId')
-          ? RemoteObjectId.fromJson(json['objectId'] as String)
-          : null,
+      objectId: json.containsKey('objectId') ? RemoteObjectId.fromJson(json['objectId'] as String) : null,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       if (value != null) 'value': value,
-      if (unserializableValue != null)
-        'unserializableValue': unserializableValue!.toJson(),
+      if (unserializableValue != null) 'unserializableValue': unserializableValue!.toJson(),
       if (objectId != null) 'objectId': objectId!.toJson(),
     };
   }
@@ -1509,8 +1403,7 @@ class ExecutionContextId {
   int toJson() => value;
 
   @override
-  bool operator ==(other) =>
-      (other is ExecutionContextId && other.value == value) || value == other;
+  bool operator ==(other) => (other is ExecutionContextId && other.value == value) || value == other;
 
   @override
   int get hashCode => value.hashCode;
@@ -1540,11 +1433,7 @@ class ExecutionContextDescription {
   final Map<String, dynamic>? auxData;
 
   ExecutionContextDescription(
-      {required this.id,
-      required this.origin,
-      required this.name,
-      required this.uniqueId,
-      this.auxData});
+      {required this.id, required this.origin, required this.name, required this.uniqueId, this.auxData});
 
   factory ExecutionContextDescription.fromJson(Map<String, dynamic> json) {
     return ExecutionContextDescription(
@@ -1552,9 +1441,7 @@ class ExecutionContextDescription {
       origin: json['origin'] as String,
       name: json['name'] as String,
       uniqueId: json['uniqueId'] as String,
-      auxData: json.containsKey('auxData')
-          ? json['auxData'] as Map<String, dynamic>
-          : null,
+      auxData: json.containsKey('auxData') ? json['auxData'] as Map<String, dynamic> : null,
     );
   }
 
@@ -1622,22 +1509,17 @@ class ExceptionDetails {
       text: json['text'] as String,
       lineNumber: json['lineNumber'] as int,
       columnNumber: json['columnNumber'] as int,
-      scriptId: json.containsKey('scriptId')
-          ? ScriptId.fromJson(json['scriptId'] as String)
-          : null,
+      scriptId: json.containsKey('scriptId') ? ScriptId.fromJson(json['scriptId'] as String) : null,
       url: json.containsKey('url') ? json['url'] as String : null,
-      stackTrace: json.containsKey('stackTrace')
-          ? StackTraceData.fromJson(json['stackTrace'] as Map<String, dynamic>)
-          : null,
-      exception: json.containsKey('exception')
-          ? RemoteObject.fromJson(json['exception'] as Map<String, dynamic>)
-          : null,
+      stackTrace:
+          json.containsKey('stackTrace') ? StackTraceData.fromJson(json['stackTrace'] as Map<String, dynamic>) : null,
+      exception:
+          json.containsKey('exception') ? RemoteObject.fromJson(json['exception'] as Map<String, dynamic>) : null,
       executionContextId: json.containsKey('executionContextId')
           ? ExecutionContextId.fromJson(json['executionContextId'] as int)
           : null,
-      exceptionMetaData: json.containsKey('exceptionMetaData')
-          ? json['exceptionMetaData'] as Map<String, dynamic>
-          : null,
+      exceptionMetaData:
+          json.containsKey('exceptionMetaData') ? json['exceptionMetaData'] as Map<String, dynamic> : null,
     );
   }
 
@@ -1651,8 +1533,7 @@ class ExceptionDetails {
       if (url != null) 'url': url,
       if (stackTrace != null) 'stackTrace': stackTrace!.toJson(),
       if (exception != null) 'exception': exception!.toJson(),
-      if (executionContextId != null)
-        'executionContextId': executionContextId!.toJson(),
+      if (executionContextId != null) 'executionContextId': executionContextId!.toJson(),
       if (exceptionMetaData != null) 'exceptionMetaData': exceptionMetaData,
     };
   }
@@ -1669,8 +1550,7 @@ class Timestamp {
   num toJson() => value;
 
   @override
-  bool operator ==(other) =>
-      (other is Timestamp && other.value == value) || value == other;
+  bool operator ==(other) => (other is Timestamp && other.value == value) || value == other;
 
   @override
   int get hashCode => value.hashCode;
@@ -1690,8 +1570,7 @@ class TimeDelta {
   num toJson() => value;
 
   @override
-  bool operator ==(other) =>
-      (other is TimeDelta && other.value == value) || value == other;
+  bool operator ==(other) => (other is TimeDelta && other.value == value) || value == other;
 
   @override
   int get hashCode => value.hashCode;
@@ -1760,23 +1639,14 @@ class StackTraceData {
   /// Asynchronous JavaScript stack trace that preceded this stack, if available.
   final StackTraceId? parentId;
 
-  StackTraceData(
-      {this.description, required this.callFrames, this.parent, this.parentId});
+  StackTraceData({this.description, required this.callFrames, this.parent, this.parentId});
 
   factory StackTraceData.fromJson(Map<String, dynamic> json) {
     return StackTraceData(
-      description: json.containsKey('description')
-          ? json['description'] as String
-          : null,
-      callFrames: (json['callFrames'] as List)
-          .map((e) => CallFrame.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      parent: json.containsKey('parent')
-          ? StackTraceData.fromJson(json['parent'] as Map<String, dynamic>)
-          : null,
-      parentId: json.containsKey('parentId')
-          ? StackTraceId.fromJson(json['parentId'] as Map<String, dynamic>)
-          : null,
+      description: json.containsKey('description') ? json['description'] as String : null,
+      callFrames: (json['callFrames'] as List).map((e) => CallFrame.fromJson(e as Map<String, dynamic>)).toList(),
+      parent: json.containsKey('parent') ? StackTraceData.fromJson(json['parent'] as Map<String, dynamic>) : null,
+      parentId: json.containsKey('parentId') ? StackTraceId.fromJson(json['parentId'] as Map<String, dynamic>) : null,
     );
   }
 
@@ -1801,8 +1671,7 @@ class UniqueDebuggerId {
   String toJson() => value;
 
   @override
-  bool operator ==(other) =>
-      (other is UniqueDebuggerId && other.value == value) || value == other;
+  bool operator ==(other) => (other is UniqueDebuggerId && other.value == value) || value == other;
 
   @override
   int get hashCode => value.hashCode;
@@ -1823,9 +1692,7 @@ class StackTraceId {
   factory StackTraceId.fromJson(Map<String, dynamic> json) {
     return StackTraceId(
       id: json['id'] as String,
-      debuggerId: json.containsKey('debuggerId')
-          ? UniqueDebuggerId.fromJson(json['debuggerId'] as String)
-          : null,
+      debuggerId: json.containsKey('debuggerId') ? UniqueDebuggerId.fromJson(json['debuggerId'] as String) : null,
     );
   }
 

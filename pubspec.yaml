@@ -13,14 +13,14 @@ environment:
   sdk: '>=2.18.0 <3.0.0'
 
 dependencies:
-  archive: ^3.0.0
-  async: ^2.5.0
-  collection: ^1.15.0
-  http: ^0.13.0
-  logging: ^1.0.0
-  path: ^1.8.0
+  archive: ^3.3.6
+  async: ^2.10.0
+  collection: ^1.17.0
+  http: ^0.13.5
+  logging: ^1.1.1
+  path: ^1.8.2
   petitparser: ^5.1.0
-  pool: ^1.5.0
+  pool: ^1.5.1
 
 dev_dependencies:
   analyzer:
