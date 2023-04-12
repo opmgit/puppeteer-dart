@@ -21,6 +21,8 @@ dependencies:
   path: ^1.8.2
   petitparser: ^5.1.0
   pool: ^1.5.1
+  common:
+    path: ../opm_packages/common
 
 dev_dependencies:
   analyzer:
